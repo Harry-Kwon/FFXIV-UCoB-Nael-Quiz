@@ -16,7 +16,11 @@ var prompts = [
         a: ['thermiotic_beam', 'lunar_dynamo']
     },
     {
-        prompt: 'From on high I descend, the iron path to call! or From on high I descend, the iron path to walk!',
+        prompt: 'From on high I descend, the iron path to call!',
+        a: ['ravens_dive', 'iron_chariot']
+    },
+    {
+        prompt: 'From on high I descend, the iron path to walk!',
         a: ['ravens_dive', 'iron_chariot']
     },
     {
