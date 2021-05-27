@@ -41,7 +41,8 @@ var ANSWERS = ['lunar_dynamo', 'thermiotic_beam', 'iron_chariot', 'ravens_dive',
 var answer = [];
 var inputAnswer = [];
 var correct = 0;
-var wrong = 0;
+var lastPrompt = 0;
+// var wrong = 0;
 
 let prompt = document.getElementById('prompt');
 let n = Math.floor(Math.random() * prompts.length);
@@ -59,7 +60,9 @@ nextButton.onclick = () => {
         answerButton.className = 'btn btn-primary';
     });
 
-    let n = Math.floor(Math.random() * prompts.length);
+    let n = 1 + Math.floor(Math.random() * (prompts.length-1));
+    n = (lastPrompt + n) % prompts.length;
+    lastPrompt = n;
     prompt.innerText = prompts[n].prompt;
     answer = prompts[n].a;
     inputAnswer = [];
@@ -83,8 +86,13 @@ answerButtons.onclick = (e) => {
         if(inputAnswer.length >= 2) {
             let prompt = document.getElementById('prompt');
             prompt.className = 'd-inline bg-success';
+
+            correct+=1
         }
     } else {
         e.target.className = 'btn btn-danger';
+        correct = 0
     }
+    let streak = document.getElementById('streak');
+    streak.innerText = `streak ${correct}`
 }
