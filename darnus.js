@@ -51,6 +51,7 @@ answer = prompts[n].a;
 
 var nextButton = document.getElementById('next');
 nextButton.onclick = () => {
+    setTimeout(failure, 1000);
     let prompt = document.getElementById('prompt');
 
     prompt.className = 'd-inline';
@@ -67,7 +68,7 @@ nextButton.onclick = () => {
     answer = prompts[n].a;
     inputAnswer = [];
 }
-// Test
+
 var answerButtons = document.getElementById('answerButtons');
 answerButtons.onclick = (e) => {
     if(e.target.id === 'answerButtons') {return;}
@@ -95,4 +96,9 @@ answerButtons.onclick = (e) => {
     }
     let streak = document.getElementById('streak');
     streak.innerText = `streak ${correct}`
+}
+
+function failure()
+{
+    alert("You died");
 }
