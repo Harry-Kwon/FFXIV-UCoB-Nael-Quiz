@@ -67,7 +67,7 @@ nextButton.onclick = () => {
     answer = prompts[n].a;
     inputAnswer = [];
 }
-
+// Test
 var answerButtons = document.getElementById('answerButtons');
 answerButtons.onclick = (e) => {
     if(e.target.id === 'answerButtons') {return;}
