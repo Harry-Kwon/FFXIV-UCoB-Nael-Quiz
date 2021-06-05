@@ -42,6 +42,9 @@ var answer = [];
 var inputAnswer = [];
 var correct = 0;
 var lastPrompt = 0;
+var timeLimit = 0;
+var timeoutEnabled = false;
+var timeoutHandle;
 // var wrong = 0;
 
 let prompt = document.getElementById('prompt');
@@ -51,7 +54,8 @@ answer = prompts[n].a;
 
 var nextButton = document.getElementById('next');
 nextButton.onclick = () => {
-    setTimeout(failure, 1000);
+    startTimerIfEnabled();
+
     let prompt = document.getElementById('prompt');
 
     prompt.className = 'd-inline';
@@ -92,22 +96,42 @@ answerButtons.onclick = (e) => {
         }
     } else {
         e.target.className = 'btn btn-danger';
-        correct = 0
+        correct = 0;
     }
     let streak = document.getElementById('streak');
-    streak.innerText = `Streak: ${correct}`
+    streak.innerText = `Streak: ${correct}`;
 }
 
 function timerEnableToggled(checkbox)
 {
     if(checkbox.checked == true){
         document.getElementById("timeLimitInput").removeAttribute("disabled");
+        timeoutEnabled = true;
     }else{
         document.getElementById("timeLimitInput").setAttribute("disabled", "disabled");
+        timeoutEnabled = false;
    }
+}
+
+function startTimerIfEnabled()
+{
+    if (timeoutHandle != null) {
+        // Reset timer so that users don't fail twice
+        clearTimeout(timeoutHandle);
+        timeoutHandle = null;
+    }
+
+    if (timeoutEnabled) {
+        timeLimit = parseInt(document.getElementById('timeLimitInput').value);
+        timeoutHandle = setTimeout(failure, timeLimit * 1000);
+    }
 }
 
 function failure()
 {
+    correct = 0;
+    let streak = document.getElementById('streak');
+    streak.innerText = `Streak: ${correct}`;
+
     alert("You died");
 }
