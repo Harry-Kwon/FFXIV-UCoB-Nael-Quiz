@@ -95,7 +95,16 @@ answerButtons.onclick = (e) => {
         correct = 0
     }
     let streak = document.getElementById('streak');
-    streak.innerText = `streak ${correct}`
+    streak.innerText = `Streak: ${correct}`
+}
+
+function timerEnableToggled(checkbox)
+{
+    if(checkbox.checked == true){
+        document.getElementById("timeLimitInput").removeAttribute("disabled");
+    }else{
+        document.getElementById("timeLimitInput").setAttribute("disabled", "disabled");
+   }
 }
 
 function failure()
