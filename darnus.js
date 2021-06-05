@@ -107,22 +107,20 @@ answerButtons.onclick = (e) => {
 
 function timerEnableToggled(checkbox)
 {
-    if(checkbox.checked == true){
+    if(checkbox.checked == true) {
         document.getElementById("timeLimitInput").removeAttribute("disabled");
         timeoutEnabled = true;
-    }else{
+        startTimerIfEnabled();
+    } else {
         document.getElementById("timeLimitInput").setAttribute("disabled", "disabled");
         timeoutEnabled = false;
+        resetTimer();
    }
 }
 
-function startTimerIfEnabled()
-{
-    if (timeoutHandle != null) {
-        // Reset timer so that users don't fail twice
-        clearTimeout(timeoutHandle);
-        timeoutHandle = null;
-    }
+function startTimerIfEnabled() {
+    // Reset timer so that users don't fail twice
+    resetTimer();
 
     if (timeoutEnabled) {
         timeLimit = parseInt(document.getElementById('timeLimitInput').value);
@@ -130,14 +128,19 @@ function startTimerIfEnabled()
     }
 }
 
-function failure()
-{
-    if (correct === false)
-    {
+function resetTimer() {
+    if (timeoutHandle != null) {
+        clearTimeout(timeoutHandle);
+        timeoutHandle = null;
+    }
+}
+
+function failure() {
+    if (correct === false) {
         numCorrect = 0;
         let streak = document.getElementById('streak');
         streak.innerText = `Streak: ${numCorrect}`;
     
-        alert("You died");
+        alert("Time out - You died");
     }
 }
