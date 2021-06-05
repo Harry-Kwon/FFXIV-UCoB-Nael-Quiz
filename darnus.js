@@ -40,7 +40,8 @@ var prompts = [
 var ANSWERS = ['lunar_dynamo', 'thermiotic_beam', 'iron_chariot', 'ravens_dive', 'dalamud_dive', 'meteor_stream'];
 var answer = [];
 var inputAnswer = [];
-var correct = 0;
+var numCorrect = 0; // yeah yeah this naming is confusing
+var correct = false;
 var lastPrompt = 0;
 var timeLimit = 0;
 var timeoutEnabled = false;
@@ -54,6 +55,7 @@ answer = prompts[n].a;
 
 var nextButton = document.getElementById('next');
 nextButton.onclick = () => {
+    correct = false;
     startTimerIfEnabled();
 
     let prompt = document.getElementById('prompt');
@@ -92,14 +94,15 @@ answerButtons.onclick = (e) => {
             let prompt = document.getElementById('prompt');
             prompt.className = 'd-inline bg-success';
 
-            correct+=1
+            numCorrect+=1
+            correct = true;
         }
     } else {
         e.target.className = 'btn btn-danger';
-        correct = 0;
+        numCorrect = 0;
     }
     let streak = document.getElementById('streak');
-    streak.innerText = `Streak: ${correct}`;
+    streak.innerText = `Streak: ${numCorrect}`;
 }
 
 function timerEnableToggled(checkbox)
@@ -129,9 +132,12 @@ function startTimerIfEnabled()
 
 function failure()
 {
-    correct = 0;
-    let streak = document.getElementById('streak');
-    streak.innerText = `Streak: ${correct}`;
-
-    alert("You died");
+    if (correct === false)
+    {
+        numCorrect = 0;
+        let streak = document.getElementById('streak');
+        streak.innerText = `Streak: ${numCorrect}`;
+    
+        alert("You died");
+    }
 }
