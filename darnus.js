@@ -40,7 +40,8 @@ var prompts = [
 var ANSWERS = ['lunar_dynamo', 'thermiotic_beam', 'iron_chariot', 'ravens_dive', 'dalamud_dive', 'meteor_stream'];
 var answer = [];
 var inputAnswer = [];
-var correct = 0;
+var numCorrect = 0; // yeah yeah this naming is confusing
+var correct = false;
 var lastPrompt = 0;
 var timeLimit = 0;
 var timeoutEnabled = false;
@@ -54,6 +55,7 @@ answer = prompts[n].a;
 
 var nextButton = document.getElementById('next');
 nextButton.onclick = () => {
+    correct = false;
     startTimerIfEnabled();
 
     let prompt = document.getElementById('prompt');
@@ -92,34 +94,33 @@ answerButtons.onclick = (e) => {
             let prompt = document.getElementById('prompt');
             prompt.className = 'd-inline bg-success';
 
-            correct+=1
+            numCorrect+=1
+            correct = true;
         }
     } else {
         e.target.className = 'btn btn-danger';
-        correct = 0;
+        numCorrect = 0;
     }
     let streak = document.getElementById('streak');
-    streak.innerText = `Streak: ${correct}`;
+    streak.innerText = `Streak: ${numCorrect}`;
 }
 
 function timerEnableToggled(checkbox)
 {
-    if(checkbox.checked == true){
+    if(checkbox.checked == true) {
         document.getElementById("timeLimitInput").removeAttribute("disabled");
         timeoutEnabled = true;
-    }else{
+        startTimerIfEnabled();
+    } else {
         document.getElementById("timeLimitInput").setAttribute("disabled", "disabled");
         timeoutEnabled = false;
+        resetTimer();
    }
 }
 
-function startTimerIfEnabled()
-{
-    if (timeoutHandle != null) {
-        // Reset timer so that users don't fail twice
-        clearTimeout(timeoutHandle);
-        timeoutHandle = null;
-    }
+function startTimerIfEnabled() {
+    // Reset timer so that users don't fail twice
+    resetTimer();
 
     if (timeoutEnabled) {
         timeLimit = parseInt(document.getElementById('timeLimitInput').value);
@@ -127,11 +128,19 @@ function startTimerIfEnabled()
     }
 }
 
-function failure()
-{
-    correct = 0;
-    let streak = document.getElementById('streak');
-    streak.innerText = `Streak: ${correct}`;
+function resetTimer() {
+    if (timeoutHandle != null) {
+        clearTimeout(timeoutHandle);
+        timeoutHandle = null;
+    }
+}
 
-    alert("You died");
+function failure() {
+    if (correct === false) {
+        numCorrect = 0;
+        let streak = document.getElementById('streak');
+        streak.innerText = `Streak: ${numCorrect}`;
+    
+        alert("Time out - You died");
+    }
 }
